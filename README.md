@@ -1,0 +1,1 @@
+# adgency-ai-assingment
