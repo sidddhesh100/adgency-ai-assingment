@@ -1,6 +1,15 @@
 from flask import Flask
+import pymongo
+import os 
+from blueprint.user import user
+from dotenv import load_dotenv
 
+
+load_dotenv()
 app = Flask(__name__)
+
+app.config["MASTER_DB_CON"] = pymongo.MongoClient(os.environ.get("MONGO_DB_URL"), maxPoolSize=300)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'this is a secret'
 
 
 @app.route("/")
@@ -19,6 +28,8 @@ def logout():
 def register():
     pass
 
+
+app.register_blueprint(user)
 
 if __name__ == "__main__":
     app.run(debug=True)
