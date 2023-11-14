@@ -16,7 +16,6 @@ class Review(object):
     review: str
     book_id: str
     user_id: str
-    comment_id: str
 
 
 @dataclass(init=True)
@@ -27,4 +26,5 @@ class Book(object):
     author: str
     genre: str
     publication_year: str
+    user_id: str
     created_at: datetime

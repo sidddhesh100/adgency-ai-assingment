@@ -114,7 +114,7 @@ def filter_book():
 
 
 @book.route("/create", methods=["POST"])
-@token_required
+@token_required()
 def add_book():
     data = request.get_json()
     try:
@@ -127,6 +127,7 @@ def add_book():
         )
     data["created_at"] = datetime.now()
     data["book_id"] = str(uuid4())
+    data["user_id"] = session.get("user", {}).get("user_id", "")
     book = Book(**data)
     current_app.config["MASTER_DB_CON"]["book"].insert_one(book.__dict__)
     book.created_at = datetime.strftime(book.created_at, "%c")
