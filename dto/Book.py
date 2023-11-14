@@ -8,6 +8,7 @@ class Comment(object):
     comment: str
     user_id: str
     review_id: str
+    created_at: datetime
     
 @dataclass(init=True)
 class Review(object):
@@ -24,6 +25,5 @@ class Book(object):
     title: str
     author: str
     genre: str
-    # year should be less than or equal to current year
     publication_year: str
     created_at: datetime

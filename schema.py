@@ -1,4 +1,5 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema, fields, validate, validates_schema
+from marshmallow.exceptions import ValidationError
 from datetime import datetime
 from constant import BOOK_GENRE
 
@@ -26,7 +27,24 @@ class AddReviewSchema(Schema):
     book_id = fields.Str(required=True,validate=validate.Length(min=3, max=30))
     user_id = fields.Str(required=True,validate=validate.Length(min=3, max=30))
     reveiw =fields.Str(required=True,validate=validate.Length(min=3, max=300))
+    rating = fields.Decimal(required=True, validate=validate.Range(min=0, max=5))
     
 class UpdateReviewSchema(Schema):
     review_id = fields.Str(required=True,validate=validate.Length(min=3, max=30))
     review =fields.Str(required=True,validate=validate.Length(min=3, max=300))
+    rating = fields.Decimal(required=True, validate=validate.Range(min=0, max=5))
+
+class AddComentSchema(Schema):
+    user_id = fields.Str(required=True,validate=validate.Length(min=3, max=30))    
+    review_id = fields.Str(required=True,validate=validate.Length(min=3, max=30))
+    comment = fields.Str(required=True,validate=validate.Length(min=3, max=300))
+    
+class FilterBookSchema(Schema):
+    rating=fields.Decimal(required=False, validate=validate.Range(min=0, max=5))
+    genre = fields.Str(required=False,validate=validate.OneOf(BOOK_GENRE))
+    publication_year = fields.Int(required=False, validate=validate.Range(min=0, max=datetime.now().year))
+    
+    @validate_schema
+    def validate(self, data, **kwargs):
+        if not data.get("rating") and not data.get("genre") and not data.get("publication_year"):
+            raise ValidationError(f"Please apply any one filter from this rating, genre, publication_year")
