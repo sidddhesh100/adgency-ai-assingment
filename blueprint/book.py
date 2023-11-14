@@ -1,92 +1,119 @@
-from flask import Blueprint, request, current_app, Response, session
-from http import HTTPStatus
-from schema import CreateBookSchema, AddReviewSchema, AddComentSchema
-from http import HTTPStatus
-from datetime import datetime
-from uuid import uuid4
-from dto.Book import Book, Review, Comment
 import json
+from datetime import datetime
+from http import HTTPStatus
+from uuid import uuid4
+
+from flask import Blueprint, Response, current_app, request, session
 from marshmallow.exceptions import ValidationError
+
 from decorator import token_required
+from dto.Book import Book, Comment, Review
+from schema import (
+    AddComentSchema,
+    AddReviewSchema,
+    CreateBookSchema,
+    FilterBookSchema,
+    UpdateReviewSchema,
+)
 
 book = Blueprint("book", __name__, url_prefix="/book/")
 
-@book.route('/search', methods=["GET"])
+
+@book.route("/search", methods=["GET"])
 @token_required
 def search_book():
     """
     find books by title, author, or genre.
 
-    """    
+    """
     title = request.args.get("title")
     author = request.args.get("author")
     genre = request.args.get("genre")
     if not title and not author and not genre:
         return Response(
-            json.dumps({"status": False, "message": "Please provide search attributes such as title, author, genre"}, 
-            ),status=HTTPStatus.BAD_REQUEST, content_type="application/json"
+            json.dumps(
+                {"status": False, "message": "Please provide search attributes such as title, author, genre"},
+            ),
+            status=HTTPStatus.BAD_REQUEST,
+            content_type="application/json",
         )
     query = {"$or": []}
     if title:
-        query["$or"].append({"title":{"$regex": f"{title}". "$option": "i"}})
+        query["$or"].append({"title": {"$regex": f"{title}", "$option": "i"}})
     if author:
-        query["$or"].append({"author":{"$regex": f"{author}". "$option": "i"}})
+        query["$or"].append({"author": {"$regex": f"{author}", "$option": "i"}})
     if genre:
-        query["$or"].append({"genre":{"$regex": f"{genre}". "$option": "i"}})
+        query["$or"].append({"genre": {"$regex": f"{genre}", "$option": "i"}})
     book = list(current_app.config["MASTER_DB_CON"]["book"].find(query, {"_id": 1}))
-    if len(book)>0:
+    if len(book) > 0:
         return Response(
-            json.dumps({"status": True, "message": "Result found", "result": book}, 
-            ),status=HTTPStatus.OK, content_type="application/json"
+            json.dumps(
+                {"status": True, "message": "Result found", "result": book},
+            ),
+            status=HTTPStatus.OK,
+            content_type="application/json",
         )
     return Response(
-            json.dumps({"status": False, "message": "data not found"}, 
-            ),status=HTTPStatus.NOT_FOUND, content_type="application/json"
-        )
+        json.dumps(
+            {"status": False, "message": "data not found"},
+        ),
+        status=HTTPStatus.NOT_FOUND,
+        content_type="application/json",
+    )
 
-@book.route('/filter', methods=["GET"])
+
+@book.route("/filter", methods=["GET"])
 @token_required
 def filter_book():
     """
-     filter books by rating, genre, or publication year.
+    filter books by rating, genre, or publication year.
 
     """
-    rating = request.args.get("rating")
-    genre = request.args.get("genre")
-    publication_year = request.args.get("publication_year")
-    if not rating and not author and not genre:
+
+    data = request.args
+    try:
+        data = FilterBookSchema().load(data)
+    except ValidationError as e:
         return Response(
-            json.dumps({"status": False, "message": "Please provide search attributes such as title, author, genre"}, 
-            ),status=HTTPStatus.BAD_REQUEST, content_type="application/json"
+            json.dumps({"status": False, "message": "Invalid details kindly check and try again", "allErrorMessage": e.messages}),
+            status=HTTPStatus.BAD_REQUEST,
+            content_type="application/json",
         )
-    query = {"$or": []}
-    if title:
-        query["$or"].append({"title":{"$regex": f"{title}". "$option": "i"}})
-    if author:
-        query["$or"].append({"author":{"$regex": f"{author}". "$option": "i"}})
-    if genre:
-        query["$or"].append({"genre":{"$regex": f"{genre}". "$option": "i"}})
+    query = {}
+    if data.get("rating", None):
+        query["rating"] = data.get("rating", "")
+    if data.get("publication_year", None):
+        query["rating"] = data.get("publication_year", "")
+    if data.get("genre", None):
+        query["rating"] = data.get("genre", "")
     book = list(current_app.config["MASTER_DB_CON"]["book"].find(query, {"_id": 1}))
-    if len(book)>0:
+    if len(book) > 0:
         return Response(
-            json.dumps({"status": True, "message": "Result found", "result": book}, 
-            ),status=HTTPStatus.OK, content_type="application/json"
+            json.dumps(
+                {"status": True, "message": "Result found", "result": book},
+            ),
+            status=HTTPStatus.OK,
+            content_type="application/json",
         )
     return Response(
-            json.dumps({"status": False, "message": "data not found"}, 
-            ),status=HTTPStatus.NOT_FOUND, content_type="application/json"
-        )
+        json.dumps(
+            {"status": False, "message": "data not found"},
+        ),
+        status=HTTPStatus.NOT_FOUND,
+        content_type="application/json",
+    )
 
 
-@book.route('/ratings', methods=["PUT"])
-@token_required
-def ratings_of_book():
-    """
-    ratings by user on book
-    """    
-    data = request.get_json()
+# @book.route('/ratings', methods=["PUT"])
+# @token_required
+# def ratings_of_book():
+#     """
+#     ratings by user on book
+#     """
+#     data = request.get_json()
 
-@book.route('/create', methods=["POST"])
+
+@book.route("/create", methods=["POST"])
 @token_required
 def add_book():
     data = request.get_json()
@@ -94,14 +121,9 @@ def add_book():
         data = CreateBookSchema().load(data)
     except ValidationError as e:
         return Response(
-            json.dumps({
-                "status": False,
-                "message": "Invalid details kindly check and try again",
-                "allErrorMessage": e.messages
-            }),
+            json.dumps({"status": False, "message": "Invalid details kindly check and try again", "allErrorMessage": e.messages}),
             status=HTTPStatus.BAD_REQUEST,
             content_type="application/json",
-            
         )
     data["created_at"] = datetime.now()
     data["book_id"] = str(uuid4())
@@ -109,11 +131,14 @@ def add_book():
     current_app.config["MASTER_DB_CON"]["book"].insert_one(book.__dict__)
     book.created_at = datetime.strftime(book.created_at, "%c")
     del book._id
-    return Response(json.dumps({
-        "status": True, "message": "Book created", "book": book.__dict__
-    }), status=HTTPStatus.OK, content_type="application/json")
-    
-@book.route('/review', methods=["POST"])
+    return Response(
+        json.dumps({"status": True, "message": "Book created", "book": book.__dict__}),
+        status=HTTPStatus.OK,
+        content_type="application/json",
+    )
+
+
+@book.route("/review", methods=["POST"])
 @token_required
 def add_review():
     data = request.get_json()
@@ -121,49 +146,49 @@ def add_review():
         data = AddReviewSchema().load(data)
     except ValidationError as e:
         return Response(
-            json.dumps({
-                "status": False,
-                "message": "Invalid details kindly check and try again",
-                "allErrorMessage": e.messages
-            }),
+            json.dumps({"status": False, "message": "Invalid details kindly check and try again", "allErrorMessage": e.messages}),
             status=HTTPStatus.BAD_REQUEST,
             content_type="application/json",
-            
         )
     user = session["user"]
     book_exist = current_app.config["MASTER_DB_CON"]["book"].find_one({"book_id": data.get("book_id", "")})
     if not user:
         return Response(
-            json.dumps({
-                "status": True,
-                "message": f"user not exist for this  user_id {data.get('user_id','')}",
-            }),
+            json.dumps(
+                {
+                    "status": True,
+                    "message": f"user not exist for this  user_id {data.get('user_id','')}",
+                }
+            ),
             status=HTTPStatus.OK,
             content_type="application/json",
-            
         )
     if not book_exist:
         return Response(
-            json.dumps({
-                "status": True,
-                "message": f"user not exist for this  book_id {data.get('book_id','')}",
-            }),
+            json.dumps(
+                {
+                    "status": True,
+                    "message": f"user not exist for this  book_id {data.get('book_id','')}",
+                }
+            ),
             status=HTTPStatus.OK,
             content_type="application/json",
-            
         )
-        
+
     data["created_at"] = datetime.now()
     data["review_id"] = str(uuid4())
     reveiw = Review(**data)
     current_app.config["MASTER_DB_CON"]["review"].insert_one(reveiw.__dict__)
     book.created_at = datetime.strftime(book.created_at, "%c")
     del book._id
-    return Response(json.dumps({
-        "status": True, "message": f"review added for the this book id {data.get('book_id', '')}"
-    }), status=HTTPStatus.OK, content_type="application/json")
-        
-@book.route('/review', methods=["PUT"])
+    return Response(
+        json.dumps({"status": True, "message": f"review added for the this book id {data.get('book_id', '')}"}),
+        status=HTTPStatus.OK,
+        content_type="application/json",
+    )
+
+
+@book.route("/review", methods=["PUT"])
 @token_required
 def edit_review():
     data = request.get_json()
@@ -171,66 +196,78 @@ def edit_review():
         data = UpdateReviewSchema().load(data)
     except ValidationError as e:
         return Response(
-            json.dumps({
-                "status": False,
-                "message": "Invalid details kindly check and try again",
-                "allErrorMessage": e.messages
-            }),
+            json.dumps({"status": False, "message": "Invalid details kindly check and try again", "allErrorMessage": e.messages}),
             status=HTTPStatus.BAD_REQUEST,
             content_type="application/json",
-            
         )
-    
+
     review = current_app.config["MASTER_DB_CON"]["review"].find_one({"review_id": data.get("review_id")})
     if review:
-        user =session["user"]
-        if review.get("user_id")== user.get("review_id"):
-            current_app.config["MASTER_DB_CON"]["review"].update({"review_id": data.get("review_id")}, {"$set":{"review": data.get("review")}})
-            return Response(json.dumps({
-            "status": True, "message": f"review updated for the this book id {review.get('book_id', '')}"
-        }), status=HTTPStatus.OK, content_type="application/json")
-        return Response(json.dumps({
-            "status": True, "message": f"This review is not your you can't delete this "
-        }), status=HTTPStatus.OK, content_type="application/json")
-    return Response(
-            json.dumps({
-                "status": False,
-                "message": f"Review not found for this review id {data.get('review_id')}",
-            }),
+        user = session["user"]
+        if review.get("user_id") == user.get("review_id"):
+            current_app.config["MASTER_DB_CON"]["review"].update(
+                {"review_id": data.get("review_id")}, {"$set": {"review": data.get("review")}}
+            )
+            return Response(
+                json.dumps({"status": True, "message": f"review updated for the this book id {review.get('book_id', '')}"}),
+                status=HTTPStatus.OK,
+                content_type="application/json",
+            )
+        return Response(
+            json.dumps({"status": True, "message": "This review is not your you can't delete this"}),
             status=HTTPStatus.OK,
             content_type="application/json",
-            
         )
-    
-    
-@book.route('/review',  methods=["DELETE"])
+    return Response(
+        json.dumps(
+            {
+                "status": False,
+                "message": f"Review not found for this review id {data.get('review_id')}",
+            }
+        ),
+        status=HTTPStatus.OK,
+        content_type="application/json",
+    )
+
+
+@book.route("/review", methods=["DELETE"])
 @token_required
 def delete_review():
     review_id = request.args.get("review_id")
     if not review_id:
-        return Response(json.dumps({"status": False, "message": "Invalid review id"}), status=HTTPStatus.BAD_REQUEST, content_type="application/json")
-    review = current_app.config["MASTER_DB_CON"]["review"].find_one({"review_id": data.get("review_id")})
+        return Response(
+            json.dumps({"status": False, "message": "Invalid review id"}),
+            status=HTTPStatus.BAD_REQUEST,
+            content_type="application/json",
+        )
+    review = current_app.config["MASTER_DB_CON"]["review"].find_one({"review_id": review_id})
     if review:
-        user =session["user"]
-        if review.get("user_id")== user.get("review_id"):
-            current_app.config["MASTER_DB_CON"]["review"].delete_one({"review_id": data.get("review_id")})
-            return Response(json.dumps({
-            "status": True, "message": f"review deleted for this book id {review.get('book_id', '')}"
-        }), status=HTTPStatus.OK, content_type="application/json")
-        return Response(json.dumps({
-            "status": True, "message": f"This review is not your you can't delete this "
-        }), status=HTTPStatus.OK, content_type="application/json")
+        user = session["user"]
+        if review.get("user_id") == user.get("review_id"):
+            current_app.config["MASTER_DB_CON"]["review"].delete_one({"review_id": review_id})
+            return Response(
+                json.dumps({"status": True, "message": f"review deleted for this book id {review.get('book_id', '')}"}),
+                status=HTTPStatus.OK,
+                content_type="application/json",
+            )
+        return Response(
+            json.dumps({"status": True, "message": "This review is not your you can't delete this"}),
+            status=HTTPStatus.OK,
+            content_type="application/json",
+        )
     return Response(
-        json.dumps({
-            "status": False,
-            "message": f"Review not found for this review id {data.get('review_id')}",
-        }),
+        json.dumps(
+            {
+                "status": False,
+                "message": f"Review not found for this review id {review_id}",
+            }
+        ),
         status=HTTPStatus.OK,
         content_type="application/json",
-        
     )
-    
-@book.route('/add-comment-on-review', methods=['POST'])
+
+
+@book.route("/add-comment-on-review", methods=["POST"])
 @token_required
 def comment_on_review():
     data = request.get_json()
@@ -238,14 +275,9 @@ def comment_on_review():
         data = AddComentSchema().load(data)
     except ValidationError as e:
         return Response(
-            json.dumps({
-                "status": False,
-                "message": "Invalid details kindly check and try again",
-                "allErrorMessage": e.messages
-            }),
+            json.dumps({"status": False, "message": "Invalid details kindly check and try again", "allErrorMessage": e.messages}),
             status=HTTPStatus.BAD_REQUEST,
             content_type="application/json",
-            
         )
     # user_exist = current_app.config["MASTER_DB_CON"]["user"].find_one({"user_id": data.get("user_id", "")})
     review = current_app.config["MASTER_DB_CON"]["review"].find_one({"review_id": data.get("review_id")})
@@ -253,17 +285,24 @@ def comment_on_review():
     if review:
         data["commnet_id"] = str(uuid4())
         data["created_at"] = datetime.now()
-        comment=Comment(**data)
-        current_app.config["MASTER_DB_CON"]["comment"].insert_one(reveiw.__dict__)
+        comment = Comment(**data)
+        current_app.config["MASTER_DB_CON"]["comment"].insert_one(comment.__dict__)
         comment.created_at = datetime.strftime(book.created_at, "%c")
         del comment._id
-        return Response(json.dumps({
-            "status": True, "message": f"comment added for this review id {data.get('review_id', '')}"
-        }), status=HTTPStatus.OK, content_type="application/json")
-        
+        return Response(
+            json.dumps({"status": True, "message": f"comment added for this review id {data.get('review_id', '')}"}),
+            status=HTTPStatus.OK,
+            content_type="application/json",
+        )
+
     response = Response(
-        json.dumps({"status": False, "message": f"user not found for this user id {data.get('user_id')}" if not user_exist else f"Review not found for his reveiew id {data.get('review_id')}"}),
-        status=HTTPStatus.BAD_REQUEST, content_type="application/json"
-        
+        json.dumps(
+            {
+                "status": False,
+                "message": f"Review not found for his reveiew id {data.get('review_id')}",
+            }
+        ),
+        status=HTTPStatus.BAD_REQUEST,
+        content_type="application/json",
     )
     return response

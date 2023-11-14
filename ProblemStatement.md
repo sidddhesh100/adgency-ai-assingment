@@ -50,7 +50,7 @@ Develop a RESTful API for a Book Review Platform using Flask. The platform shoul
 
 - **Source Code:** Complete source code as a private git repo shared with [abhishek@adsgency.ai](mailto:abhishek@adsgency.ai) with clear structure and naming conventions. (use the main branch as master)
 - **Database Schema:** A UML diagram or document outlining the database schema.
-- **Postman collection:** Share a postman collection with all the endpoints (with proper variables) 
+- **Postman collection:** Share a postman collection with all the endpoints (with proper variables)
 - **Deployment:** Deploy your API on any cloud provider of your choice.
 
 **Evaluation Criteria:**
