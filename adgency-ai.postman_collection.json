@@ -1,0 +1,335 @@
+{
+	"info": {
+		"_postman_id": "2b5a2f44-738a-4b6f-b25a-e2341b438fdf",
+		"name": "adgency-ai",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23622407"
+	},
+	"item": [
+		{
+			"name": "user-register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"siddhesh\",\n    \"last_name\": \"angane\",\n    \"is_admin\": false,\n    \"email\": \"siddhuangane4@masmed.com\",\n    \"password\": \"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/user/register",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login api",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"siddhuangane4@masmed.com\",\n    \"password\":\"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/user/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add book",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmUwZGUwNWItZDE0Zi00OWVjLThkYzAtOWViMmE3ZTdjOThmIn0.uDBxQHqHjeECo6Z5NqKKgkVpIQRhJCa6M5P5HF2P_88",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"sangeet book\",\n    \"title\": \"the amzing songs\",\n    \"author\": \"siddhesh angane\",\n    \"genre\": \"History\",\n    \"publication_year\": 2018\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/book/create",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"book",
+						"create"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add review",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmUwZGUwNWItZDE0Zi00OWVjLThkYzAtOWViMmE3ZTdjOThmIn0.uDBxQHqHjeECo6Z5NqKKgkVpIQRhJCa6M5P5HF2P_88",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"book_id\": \"aa986728-ec2d-44f4-9254-a795d12ca778\",\n    \"user_id\": \"2e0de05b-d14f-49ec-8dc0-9eb2a7e7c98f\",\n    \"review\": \"This is the best book\",\n    \"rating\": 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/book/review",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"book",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit review",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmUwZGUwNWItZDE0Zi00OWVjLThkYzAtOWViMmE3ZTdjOThmIn0.uDBxQHqHjeECo6Z5NqKKgkVpIQRhJCa6M5P5HF2P_88",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"review_id\": \"f5a6f25b-d864-4151-9634-eaa5495c0b22\",\n    \"review\": \"this is okay type book\",\n    \"rating\": 2.6\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/book/review",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"book",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete review",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmUwZGUwNWItZDE0Zi00OWVjLThkYzAtOWViMmE3ZTdjOThmIn0.uDBxQHqHjeECo6Z5NqKKgkVpIQRhJCa6M5P5HF2P_88",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/book/review?review_id=790b737a-aa60-47d7-bf41-7d071905629a",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"book",
+						"review"
+					],
+					"query": [
+						{
+							"key": "review_id",
+							"value": "790b737a-aa60-47d7-bf41-7d071905629a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-comment-on-review",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDIzN2UyYmQtZTU4MC00YmI2LWFmMDAtOGNkM2UwNTM2ZjY5In0.z08uiUk5fVqWQosK522B0rkRx8pxZEwxaP4OeiLvgZg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": \"2e0de05b-d14f-49ec-8dc0-9eb2a7e7c98f\",\n    \"review_id\": \"9ed07f22-e6cb-4223-9bdf-4d890be51c63\",\n    \"comment\": \"thanks for the knowledge\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/book/add-comment-on-review",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"book",
+						"add-comment-on-review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "book search",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDIzN2UyYmQtZTU4MC00YmI2LWFmMDAtOGNkM2UwNTM2ZjY5In0.z08uiUk5fVqWQosK522B0rkRx8pxZEwxaP4OeiLvgZg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/book/search?title=amzing&author=&genre=romance",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"book",
+						"search"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "amzing"
+						},
+						{
+							"key": "author",
+							"value": ""
+						},
+						{
+							"key": "genre",
+							"value": "romance"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filter book",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "generate rating of book",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get user for admin",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
