@@ -13,9 +13,12 @@ class Comment(object):
 
 @dataclass(init=True)
 class Review(object):
+    rating: float
     review: str
     book_id: str
     user_id: str
+    review_id: str
+    created_at: datetime
 
 
 @dataclass(init=True)
@@ -27,4 +30,5 @@ class Book(object):
     genre: str
     publication_year: str
     user_id: str
+    rating: float
     created_at: datetime

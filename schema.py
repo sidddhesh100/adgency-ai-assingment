@@ -28,30 +28,30 @@ class CreateBookSchema(Schema):
 
 
 class AddReviewSchema(Schema):
-    book_id = fields.Str(required=True, validate=validate.Length(min=3, max=30))
-    user_id = fields.Str(required=True, validate=validate.Length(min=3, max=30))
-    reveiw = fields.Str(required=True, validate=validate.Length(min=3, max=300))
-    rating = fields.Decimal(required=True, validate=validate.Range(min=0, max=5))
+    book_id = fields.Str(required=True, validate=validate.Length(min=36, max=36))
+    user_id = fields.Str(required=True, validate=validate.Length(min=36, max=36))
+    review = fields.Str(required=True, validate=validate.Length(min=3, max=300))
+    rating = fields.Float(required=True, validate=validate.Range(min=0, max=5))
 
 
 class UpdateReviewSchema(Schema):
-    review_id = fields.Str(required=True, validate=validate.Length(min=3, max=30))
+    review_id = fields.Str(required=True, validate=validate.Length(min=36, max=36))
     review = fields.Str(required=True, validate=validate.Length(min=3, max=300))
     rating = fields.Decimal(required=True, validate=validate.Range(min=0, max=5))
 
 
 class AddComentSchema(Schema):
-    user_id = fields.Str(required=True, validate=validate.Length(min=3, max=30))
-    review_id = fields.Str(required=True, validate=validate.Length(min=3, max=30))
+    user_id = fields.Str(required=True, validate=validate.Length(min=36, max=36))
+    review_id = fields.Str(required=True, validate=validate.Length(min=36, max=36))
     comment = fields.Str(required=True, validate=validate.Length(min=3, max=300))
 
 
 class FilterBookSchema(Schema):
-    rating = fields.Decimal(required=False, validate=validate.Range(min=0, max=5))
+    rating = fields.Float(required=False, validate=validate.Range(min=0, max=5))
     genre = fields.Str(required=False, validate=validate.OneOf(BOOK_GENRE))
     publication_year = fields.Int(required=False, validate=validate.Range(min=0, max=datetime.now().year))
 
     @validates_schema
-    def validate(self, data, **kwargs):
+    def validate_custom_fields(self, data, **kwargs):
         if not data.get("rating") and not data.get("genre") and not data.get("publication_year"):
             raise ValidationError("Please apply any one filter from this rating, genre, publication_year")

@@ -15,7 +15,7 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or "this is a secret"
 
 
 @app.route("/")
-def home():
+def home(number):
     return "<h1>Hello World</h1>"
 
 
@@ -23,5 +23,4 @@ app.register_blueprint(user)
 app.register_blueprint(book)
 
 if __name__ == "__main__":
-
     app.run(debug=True)

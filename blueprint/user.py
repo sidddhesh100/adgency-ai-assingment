@@ -8,21 +8,27 @@ import jwt
 from flask import Blueprint, Response, current_app, request
 from marshmallow.exceptions import ValidationError
 
-from decorator import token_required
+from decorator import admin_required, jwt_authentication
 from dto.User import User
 from schema import LoginSchema, UserRegisterSchema
 
 user = Blueprint("user", __name__, url_prefix="/user/")
 
 
-@user.route("/login")
+@user.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
     try:
         data = LoginSchema().load(data)
     except ValidationError as e:
         return Response(
-            json.dumps({"status": False, "message": "Invalid login credentials", "allErrorMessage": e.messages}),
+            json.dumps(
+                {
+                    "status": False,
+                    "message": "Invalid login credentials",
+                    "allErrorMessage": e.messages,
+                }
+            ),
             status=HTTPStatus.BAD_REQUEST,
             content_type="application/json",
         )
@@ -32,7 +38,11 @@ def login():
         is_right_password = bcrypt.checkpw(byte_password, user["password"])
 
         if is_right_password:
-            user["token"] = jwt.encode({"user_id": user["user_id"]}, current_app.config["SECRET_KEY"], algorithm="HS256")
+            user["token"] = jwt.encode(
+                {"user_id": user["user_id"]},
+                current_app.config["SECRET_KEY"],
+                algorithm="HS256",
+            )
             user.pop("password")
             user.pop("_id")
             user["created_at"] = datetime.strftime(user["created_at"], "%c")
@@ -64,7 +74,7 @@ def login():
 
 
 @user.route("/logout")
-@token_required
+@jwt_authentication()
 def logout():
     pass
 
@@ -76,7 +86,13 @@ def register():
         data = UserRegisterSchema().load(data=data)
     except ValidationError as e:
         return Response(
-            json.dumps({"status": False, "message": "Invalid details kindly check and try again", "allErrorMessage": e.messages}),
+            json.dumps(
+                {
+                    "status": False,
+                    "message": "Invalid details kindly check and try again",
+                    "allErrorMessage": e.messages,
+                }
+            ),
             status=HTTPStatus.BAD_REQUEST,
             content_type="application/json",
         )
@@ -109,5 +125,87 @@ def register():
             }
         ),
         status=HTTPStatus.OK,
+        content_type="application/json",
+    )
+
+
+@user.route("/get-users", methods=["GET"])
+@jwt_authentication()
+@admin_required()
+def get_all_user():
+    users = list(current_app.config["MASTER_DB_CON"]["user"].find({}, {"created_at": 0, "_id": 0, "password": 0}))
+    if users:
+        return Response(
+            json.dumps({"status": False, "message": "Users found", "users": users}),
+            status=HTTPStatus.OK,
+            content_type="application/json",
+        )
+    return Response(
+        json.dumps({"status": False, "message": "Users not found"}),
+        status=HTTPStatus.NOT_FOUND,
+        content_type="application/json",
+    )
+
+
+@user.route("/delete-users", methods=["DELETE"])
+@jwt_authentication()
+@admin_required()
+def remove_user():
+    user_id = request.args.get("user_id")
+    if user_id:
+        user = current_app.config["MASTER_DB_CON"]["user"].find_one({"user_id": user_id})
+        if user:
+            current_app.config["MASTER_DB_CON"]["user"].delete_one({"user_id": user_id})
+            return Response(
+                json.dumps(
+                    {
+                        "status": True,
+                        "message": f"User delete for this id {user_id}",
+                    }
+                ),
+                status=HTTPStatus.OK,
+                content_type="application/json",
+            )
+        return Response(
+            json.dumps({"status": False, "message": f"User found for this id {user_id}"}),
+            status=HTTPStatus.NOT_FOUND,
+            content_type="application/json",
+        )
+    return Response(
+        json.dumps({"status": False, "message": "Please provide a user id"}),
+        status=HTTPStatus.BAD_REQUEST,
+        content_type="application/json",
+    )
+
+
+@user.route("/change-user-authorization", methods=["DELETE"])
+@jwt_authentication()
+@admin_required()
+def change_user_authorization():
+    user_id = request.args.get("user_id")
+    change_is_admin = request.args.get("change_is_admin")
+
+    if user_id:
+        user = current_app.config["MASTER_DB_CON"]["user"].find_one({"user_id": user_id})
+        if user:
+            current_app.config["MASTER_DB_CON"]["user"].update_one({"user_id": user_id}, {"is_admin": bool(change_is_admin)})
+            return Response(
+                json.dumps(
+                    {
+                        "status": True,
+                        "message": f"User delete for this id {user_id}",
+                    }
+                ),
+                status=HTTPStatus.OK,
+                content_type="application/json",
+            )
+        return Response(
+            json.dumps({"status": False, "message": f"User found for this id {user_id}"}),
+            status=HTTPStatus.NOT_FOUND,
+            content_type="application/json",
+        )
+    return Response(
+        json.dumps({"status": False, "message": "Please provide a user id"}),
+        status=HTTPStatus.BAD_REQUEST,
         content_type="application/json",
     )
