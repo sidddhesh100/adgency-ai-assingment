@@ -12,10 +12,30 @@
 
 ## Installation Guide
 
-1. Install Python environment.
-2. Create a Python environment.
-3. Activate the created environment.
-4. Install dependencies using the `requirements.txt` file.
+1. **Install Python Environment:**
+   - Ensure that Python 3.9.6 is installed on your machine.
+
+2. **Create Python Environment:**
+   - Create a virtual environment using your preferred method (e.g., `virtualenv`).
+     ```
+     virtualenv venv
+     ```
+
+3. **Activate the Environment:**
+   - Activate the virtual environment.
+     - On Windows:
+       ```
+       .\venv\Scripts\activate
+       ```
+     - On Linux/macOS:
+       ```
+       source venv/bin/activate
+       ```
+
+4. **Install Requirements:**
+   - Install the project dependencies using the provided `requirements.txt` file.
+     ```
+     pip install -r requirements.txt
 
 ## File Structure
 
@@ -103,5 +123,22 @@
 - **Header**: Authorization
 - **Query Params**: user_id, change_is_admin
 - **Description**: Admins can change any user's authorization.
+
+
+1. **Source Code:**
+   You can find the source code on GitHub at the following link:
+   [Adgency AI Assignment - Source Code](https://github.com/sidddhesh100/adgency-ai-assingment)
+
+2. **Database Schema:**
+   The database schema is available in the following Google Drive link:
+   [Adgency AI Assignment - Database Schema](https://drive.google.com/file/d/1WzEBJVSF5_ictBs9Ks-10Md_DSrb-spX/view?usp=sharing)
+
+3. **Postman Collection:**
+   The Postman Collection is included in the GitHub report. Please locate it in the above source code link and import it into Postman for testing.
+
+4. **Deployment:**
+   The service has been deployed using AWS EC2. You can access the service through the following root URL:
+   [Adgency AI Assignment - Service URL](http://13.112.225.109/)
+
 
 **Note**: If you have any reviews or suggestions, please reach out via email at siddheshangane142000@gmail.com. Your feedback is valuable!
