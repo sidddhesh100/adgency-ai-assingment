@@ -178,7 +178,7 @@ def remove_user():
     )
 
 
-@user.route("/change-user-authorization", methods=["DELETE"])
+@user.route("/change-user-authorization", methods=["PUT"])
 @jwt_authentication()
 @admin_required()
 def change_user_authorization():

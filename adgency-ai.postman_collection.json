@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"first_name\": \"siddhesh\",\n    \"last_name\": \"angane\",\n    \"is_admin\": false,\n    \"email\": \"siddhuangane4@masmed.com\",\n    \"password\": \"12345678\"\n}",
+					"raw": "{\n    \"first_name\": \"swapnil\",\n    \"last_name\": \"angane\",\n    \"is_admin\": true,\n    \"email\": \"swapnil@gmail.com\",\n    \"password\": \"siddhesh@14\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -21,15 +21,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/user/register",
-					"protocol": "http",
+					"raw": "{{HOST_URL}}/user/register",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{HOST_URL}}"
 					],
-					"port": "5000",
 					"path": [
 						"user",
 						"register"
@@ -45,7 +40,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"siddhuangane4@masmed.com\",\n    \"password\":\"12345678\"\n}",
+					"raw": "{\n    \"email\": \"swapnil@gmail.com\",\n    \"password\":\"siddhesh@14\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -53,17 +48,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/user/login",
-					"protocol": "http",
+					"raw": "{{HOST_URL}}user/login",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{HOST_URL}}user"
 					],
-					"port": "5000",
 					"path": [
-						"user",
 						"login"
 					]
 				}
@@ -77,13 +66,13 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmUwZGUwNWItZDE0Zi00OWVjLThkYzAtOWViMmE3ZTdjOThmIn0.uDBxQHqHjeECo6Z5NqKKgkVpIQRhJCa6M5P5HF2P_88",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmE4MWE5ODMtOTZjOS00MmUxLWE3YmYtMjM2N2FhYzQ1ZDkwIn0.ZA1zfruYX2trYCek9acLIzRHnaZc4KRuQ-F8wqDjJzg",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"sangeet book\",\n    \"title\": \"the amzing songs\",\n    \"author\": \"siddhesh angane\",\n    \"genre\": \"History\",\n    \"publication_year\": 2018\n}",
+					"raw": "{\n    \"name\": \"romeo\",\n    \"title\": \"the amzing History\",\n    \"author\": \"No A\",\n    \"genre\": \"Romance\",\n    \"publication_year\": 2021\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -91,17 +80,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/book/create",
-					"protocol": "http",
+					"raw": "{{HOST_URL}}book/create",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{HOST_URL}}book"
 					],
-					"port": "5000",
 					"path": [
-						"book",
 						"create"
 					],
 					"query": [
@@ -128,7 +111,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"book_id\": \"aa986728-ec2d-44f4-9254-a795d12ca778\",\n    \"user_id\": \"2e0de05b-d14f-49ec-8dc0-9eb2a7e7c98f\",\n    \"review\": \"This is the best book\",\n    \"rating\": 4\n}",
+					"raw": "{\n    \"book_id\": \"bc2ca2bd-8b36-4f72-ba23-162616dad875\",\n    \"user_id\": \"2e0de05b-d14f-49ec-8dc0-9eb2a7e7c98f\",\n    \"review\": \"This is the best book\",\n    \"rating\": 4\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -136,17 +119,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/book/review",
-					"protocol": "http",
+					"raw": "{{HOST_URL}}book/review",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{HOST_URL}}book"
 					],
-					"port": "5000",
 					"path": [
-						"book",
 						"review"
 					]
 				}
@@ -174,17 +151,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/book/review",
-					"protocol": "http",
+					"raw": "{{HOST_URL}}book/review",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{HOST_URL}}book"
 					],
-					"port": "5000",
 					"path": [
-						"book",
 						"review"
 					]
 				}
@@ -203,17 +174,11 @@
 					}
 				],
 				"url": {
-					"raw": "http://127.0.0.1:5000/book/review?review_id=790b737a-aa60-47d7-bf41-7d071905629a",
-					"protocol": "http",
+					"raw": "{{HOST_URL}}book/review?review_id=790b737a-aa60-47d7-bf41-7d071905629a",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{HOST_URL}}book"
 					],
-					"port": "5000",
 					"path": [
-						"book",
 						"review"
 					],
 					"query": [
@@ -247,17 +212,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/book/add-comment-on-review",
-					"protocol": "http",
+					"raw": "{{HOST_URL}}book/add-comment-on-review",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{HOST_URL}}book"
 					],
-					"port": "5000",
 					"path": [
-						"book",
 						"add-comment-on-review"
 					]
 				}
@@ -276,17 +235,11 @@
 					}
 				],
 				"url": {
-					"raw": "http://127.0.0.1:5000/book/search?title=amzing&author=&genre=romance",
-					"protocol": "http",
+					"raw": "{{HOST_URL}}book/search?title=amzing&author=&genre=romance",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{HOST_URL}}book"
 					],
-					"port": "5000",
 					"path": [
-						"book",
 						"search"
 					],
 					"query": [
@@ -309,17 +262,71 @@
 		},
 		{
 			"name": "filter book",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDIzN2UyYmQtZTU4MC00YmI2LWFmMDAtOGNkM2UwNTM2ZjY5In0.z08uiUk5fVqWQosK522B0rkRx8pxZEwxaP4OeiLvgZg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_URL}}book/filter?publication_year=2018",
+					"host": [
+						"{{HOST_URL}}book"
+					],
+					"path": [
+						"filter"
+					],
+					"query": [
+						{
+							"key": "rating",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "publication_year",
+							"value": "2018"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "generate rating of book",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{HOST_URL}}book/ratings",
+					"host": [
+						"{{HOST_URL}}book"
+					],
+					"path": [
+						"ratings"
+					],
+					"query": [
+						{
+							"key": "book_id",
+							"value": "aa986728-ec2d-44f4-9254-a795d12ca778",
+							"disabled": true
+						}
+					]
+				}
 			},
 			"response": []
 		},
@@ -327,7 +334,158 @@
 			"name": "get user for admin",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjZmOWI0ZWUtMmU4Mi00MWVkLWE1NjAtNjA4ZWI5MGMzNTZkIn0.SE7a2B-ixgFgEzEmtSwEZIP8VH1pyzcnpZZfeBz2LvU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST_URL}}user/get-users",
+					"host": [
+						"{{HOST_URL}}user"
+					],
+					"path": [
+						"get-users"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-user",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjZmOWI0ZWUtMmU4Mi00MWVkLWE1NjAtNjA4ZWI5MGMzNTZkIn0.SE7a2B-ixgFgEzEmtSwEZIP8VH1pyzcnpZZfeBz2LvU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_URL}}user/delete-users?user_id",
+					"host": [
+						"{{HOST_URL}}user"
+					],
+					"path": [
+						"delete-users"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change authorization of user",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjZmOWI0ZWUtMmU4Mi00MWVkLWE1NjAtNjA4ZWI5MGMzNTZkIn0.SE7a2B-ixgFgEzEmtSwEZIP8VH1pyzcnpZZfeBz2LvU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST_URL}}user/change-user-authorization?user_id&change_is_admin",
+					"host": [
+						"{{HOST_URL}}user"
+					],
+					"path": [
+						"change-user-authorization"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": null
+						},
+						{
+							"key": "change_is_admin",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "moderate_review_for_admin",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjZmOWI0ZWUtMmU4Mi00MWVkLWE1NjAtNjA4ZWI5MGMzNTZkIn0.SE7a2B-ixgFgEzEmtSwEZIP8VH1pyzcnpZZfeBz2LvU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST_URL}}book/moderate-review?review_id",
+					"host": [
+						"{{HOST_URL}}book"
+					],
+					"path": [
+						"moderate-review"
+					],
+					"query": [
+						{
+							"key": "review_id",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "moderate_comment_for_admin",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjZmOWI0ZWUtMmU4Mi00MWVkLWE1NjAtNjA4ZWI5MGMzNTZkIn0.SE7a2B-ixgFgEzEmtSwEZIP8VH1pyzcnpZZfeBz2LvU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST_URL}}book/moderate-comment?comment_id",
+					"host": [
+						"{{HOST_URL}}book"
+					],
+					"path": [
+						"moderate-comment"
+					],
+					"query": [
+						{
+							"key": "comment_id",
+							"value": null
+						}
+					]
+				}
 			},
 			"response": []
 		}
