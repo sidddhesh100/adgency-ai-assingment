@@ -5,6 +5,7 @@
 ## Technologies Used
 - Python 3.9.6
 - Flask
+- Bycrypt (for password hashing)
 - Marshmallow (for validation)
 - MongoDB (for data storage)
 - AWS EC2 (to host MongoDB and this REST API service)
