@@ -1,5 +1,6 @@
 import os
 
+import awsgi
 import pymongo
 from dotenv import load_dotenv
 from flask import Flask
@@ -17,6 +18,10 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or "this is a secret"
 @app.route("/")
 def home():
     return "<h1>Hello World</h1>"
+
+
+def lambda_handler(event, context):
+    return awsgi.response(app, event, context, base64_content_types={"image/png"})
 
 
 app.register_blueprint(user)

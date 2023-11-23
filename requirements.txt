@@ -1,3 +1,4 @@
+aws-wsgi==0.2.7
 bcrypt==4.0.1
 black==23.11.0
 blinker==1.7.0
