@@ -472,3 +472,34 @@ def moderate_comment():
         status=HTTPStatus.BAD_REQUEST,
         content_type="application/json",
     )
+
+
+@book.route("/get-book", methods=["GET"])
+@jwt_authentication()
+def get_book():
+    """
+    get all the books
+    """
+    page_number = int(request.args.get("page_number", 1))
+    count_per_page = int(request.args.get("count_per_page"))
+    # if page_number ==1:
+    # start, end = 0, int(count_per_page)
+
+    start, end = (page_number - 1) * count_per_page, page_number * count_per_page
+
+    book = list(current_app.config["MASTER_DB_CON"]["book"].find({}, {"_id": 0, "created_at": 0}))[start:end]
+    if len(book) > 0:
+        return Response(
+            json.dumps(
+                {"status": True, "message": "data found", "data": book},
+            ),
+            status=HTTPStatus.OK,
+            content_type="application/json",
+        )
+    return Response(
+        json.dumps(
+            {"status": False, "message": "data not found"},
+        ),
+        status=HTTPStatus.NOT_FOUND,
+        content_type="application/json",
+    )
